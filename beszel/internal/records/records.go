@@ -156,7 +156,7 @@ func (rm *RecordManager) AverageSystemStats(records RecordStats) system.Stats {
 	var stats system.Stats
 	for i := range records {
 		stats = system.Stats{} // Zero the struct before unmarshalling
-		json.Unmarshal(records[i].Stats, &stats)
+		json.UnmarshalNoEscape(records[i].Stats, &stats)
 		sum.Cpu += stats.Cpu
 		sum.Mem += stats.Mem
 		sum.MemUsed += stats.MemUsed
@@ -301,7 +301,7 @@ func (rm *RecordManager) AverageContainerStats(records RecordStats) []container.
 	for i := range records {
 		// Reset the slice length to 0, but keep the capacity
 		containerStats = containerStats[:0]
-		if err := json.Unmarshal(records[i].Stats, &containerStats); err != nil {
+		if err := json.UnmarshalNoEscape(records[i].Stats, &containerStats); err != nil {
 			return []container.Stats{}
 		}
 		for i := range containerStats {

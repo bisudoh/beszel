@@ -167,7 +167,6 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, systemInfo
 		)).
 		OrderBy("created").
 		All(&systemStats)
-
 	if err != nil {
 		return err
 	}
@@ -196,7 +195,7 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, systemInfo
 		stat := systemStats[i]
 		// subtract 10 seconds to give a small time buffer
 		systemStatsCreation := stat.Created.Time().Add(-time.Second * 10)
-		if err := json.Unmarshal(stat.Stats, &stats); err != nil {
+		if err := json.UnmarshalNoEscape(stat.Stats, &stats); err != nil {
 			return err
 		}
 		// log.Println("stats", stats)

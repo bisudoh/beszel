@@ -8,7 +8,6 @@ import (
 	"beszel/internal/records"
 	"beszel/internal/users"
 	"beszel/site"
-
 	"context"
 	"crypto/ed25519"
 	"encoding/pem"
@@ -115,13 +114,16 @@ func (h *Hub) Run() {
 			})
 		default:
 			csp, cspExists := os.LookupEnv("CSP")
+			s := apis.Static(site.DistDirFS, false)
 			se.Router.Any("/{path...}", func(e *core.RequestEvent) error {
 				if cspExists {
 					e.Response.Header().Del("X-Frame-Options")
 					e.Response.Header().Set("Content-Security-Policy", csp)
 				}
-				indexFallback := !strings.HasPrefix(e.Request.URL.Path, "/static/")
-				return apis.Static(site.DistDirFS, indexFallback)(e)
+				return s(e)
+				// indexFallback := !strings.HasPrefix(e.Request.URL.Path, "/static/")
+				// http.FileServerFS(site.DistDirFS).ServeHTTP(e.Response, e.Request)
+				// return nil
 			})
 		}
 		return se.Next()
@@ -210,7 +212,6 @@ func (h *Hub) Run() {
 			go h.updateSystem(newRecord)
 		} else {
 			h.am.HandleStatusAlerts(newStatus, oldRecord)
-
 		}
 		return e.Next()
 	})
