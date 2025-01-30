@@ -11,8 +11,12 @@ on:
   workflow_dispatch:
 
 jobs:
+  get_version:
+    uses: ./.github/workflows/package_version.yml
+
   build:
     runs-on: ubuntu-latest
+    needs: get_version
     strategy:
       fail-fast: false
       matrix:
@@ -55,7 +59,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=raw,value={{sha}},enable=${{ github.ref_type != 'tag' }}
+            type=raw,value={{sha}},enable=false
 
       # https://github.com/docker/login-action
       - name: Login to Docker Hub
@@ -64,15 +68,99 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Build + Push beszel image (tag = git tag)
+        env:
+          # `github.ref_name` == git tag triggered build
+          PACKAGE_VERSION: ${{needs.get_version.outputs.package_version}}
+        run: |
+          docker buildx build \
+            --build-arg "PACKAGE_VERSION=${PACKAGE_VERSION}" \
+            --label org.opencontainers.image.revision="${{github.sha}}" \
+            --label org.opencontainers.image.version="${PACKAGE_VERSION}" \
+            --label org.opencontainers.image.description=Lightweight server monitoring hub with historical data, docker stats, and alerts. \
+            --label org.opencontainers.image.licenses=MIT \
+            --label org.opencontainers.image.source=https://github.com/bisudoh/beszel \
+            --label org.opencontainers.image.url=https://github.com/bisudoh/beszel \
+            --label org.opencontainers.image.title=beszel \
+            --label org.opencontainers.image.created="$PACKAGE_VERSION" \
+            --platform "inux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6" \
+            --pull \
+            --tag "${{secrets.DOCKERHUB_USERNAME}}/beszel:${PACKAGE_VERSION}" \
+            --output "type=image,push=true" \
+            --file ./beszel/dockerfile_Hub ./beszel
 
-      # Build and push Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: '${{ matrix.context }}'
-          file: ${{ matrix.dockerfile }}
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
-          push: ${{ github.ref_type == 'tag' }}
-          tags: ${{ steps.metadata.outputs.tags }}
-          labels: ${{ steps.metadata.outputs.labels }}
+      - name: Build + Push beszel image ("latest")
+        env:
+          # `github.ref_name` == git tag triggered build
+          PACKAGE_VERSION: ${{needs.get_version.outputs.package_version}}
+        run: |
+          docker buildx build \
+            --build-arg "PACKAGE_VERSION=${PACKAGE_VERSION}" \
+            --label org.opencontainers.image.revision="${{github.sha}}" \
+            --label org.opencontainers.image.version="${PACKAGE_VERSION}" \
+            --label org.opencontainers.image.description=Lightweight server monitoring hub with historical data, docker stats, and alerts. \
+            --label org.opencontainers.image.licenses=MIT \
+            --label org.opencontainers.image.source=https://github.com/bisudoh/beszel \
+            --label org.opencontainers.image.url=https://github.com/bisudoh/beszel \
+            --label org.opencontainers.image.title=beszel \
+            --label org.opencontainers.image.created="$PACKAGE_VERSION" \
+            --platform "inux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6" \
+            --pull \
+            --tag "${{secrets.DOCKERHUB_USERNAME}}/beszel:latest" \
+            --output "type=image,push=true" \
+            --file ./beszel/dockerfile_Hub ./beszel
+
+      - name: Build + Push beszel-agent image (tag = git tag)
+        env:
+          # `github.ref_name` == git tag triggered build
+          PACKAGE_VERSION: ${{needs.get_version.outputs.package_version}}
+        run: |
+          docker buildx build \
+            --build-arg "PACKAGE_VERSION=${PACKAGE_VERSION}" \
+            --label org.opencontainers.image.revision="${{github.sha}}" \
+            --label org.opencontainers.image.version="${PACKAGE_VERSION}" \
+            --label org.opencontainers.image.description=Lightweight server monitoring hub with historical data, docker stats, and alerts. \
+            --label org.opencontainers.image.licenses=MIT \
+            --label org.opencontainers.image.source=https://github.com/bisudoh/beszel \
+            --label org.opencontainers.image.url=https://github.com/bisudoh/beszel \
+            --label org.opencontainers.image.title=beszel \
+            --label org.opencontainers.image.created="$PACKAGE_VERSION" \
+            --platform "inux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6" \
+            --pull \
+            --tag "${{secrets.DOCKERHUB_USERNAME}}/beszel:${PACKAGE_VERSION}" \
+            --output "type=image,push=true" \
+            --file ./beszel/dockerfile_Agent ./beszel
+
+      - name: Build + Push beszel-agent image ("latest")
+        env:
+          # `github.ref_name` == git tag triggered build
+          PACKAGE_VERSION: ${{needs.get_version.outputs.package_version}}
+        run: |
+          docker buildx build \
+            --build-arg "PACKAGE_VERSION=${PACKAGE_VERSION}" \
+            --label org.opencontainers.image.revision="${{github.sha}}" \
+            --label org.opencontainers.image.version="${PACKAGE_VERSION}" \
+            --label org.opencontainers.image.description=Lightweight server monitoring hub with historical data, docker stats, and alerts. \
+            --label org.opencontainers.image.licenses=MIT \
+            --label org.opencontainers.image.source=https://github.com/bisudoh/beszel \
+            --label org.opencontainers.image.url=https://github.com/bisudoh/beszel \
+            --label org.opencontainers.image.title=beszel \
+            --label org.opencontainers.image.created="$PACKAGE_VERSION" \
+            --platform "inux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6" \
+            --pull \
+            --tag "${{secrets.DOCKERHUB_USERNAME}}/beszel:latest" \
+            --output "type=image,push=true" \
+            --file ./beszel/dockerfile_Agent ./beszel
+
+      # # Build and push Docker image with Buildx (don't push on PR)
+      # # https://github.com/docker/build-push-action
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: '${{ matrix.context }}'
+      #     file: ${{ matrix.dockerfile }}
+      #     platforms: linux/amd64,linux/arm64,linux/arm/v7
+      #     push: true
+      #     tags: ${{ steps.metadata.outputs.tags }}
+      #     labels: ${{ steps.metadata.outputs.labels }}
