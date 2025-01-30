@@ -4,6 +4,11 @@ on:
   push:
     tags:
       - '*'
+  schedule:
+    # At 03:00 on every Saturday.
+    - cron: "0 5 * * 6"
+  # On-demand push-button build, why not...
+  workflow_dispatch:
 
 permissions:
   contents: write
