@@ -1,0 +1,22 @@
+name: Get Latest Package Version
+
+on:
+  workflow_call:
+    outputs:
+      package_version:
+        description: Latest Package Version
+        value: ${{ jobs.get_latest_version.outputs.package_version }}
+  # On-demand push-button build, why not...
+  workflow_dispatch:
+
+jobs:
+  get_latest_version:
+    runs-on: ubuntu-latest
+    outputs:
+      PACKAGE_VERSION: ${{ steps.getversion.outputs.package_version }}
+    steps:
+      - id: getversion
+        name: Get Package Version
+        run: |
+            echo "DEBUG: $(date +'%Y.%m.%d')"
+            echo "package_version=$(date +'%Y.%m.%d')" >> "$GITHUB_OUTPUT"
