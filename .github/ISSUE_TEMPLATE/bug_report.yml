@@ -8,13 +8,13 @@ body:
       value: |
         ### Thanks for taking the time to fill out this bug report!
 
-        - For more general support, please [start a support thread](https://github.com/henrygd/beszel/discussions/new?category=support).
-        - To request a change or feature, use the [feature request form](https://github.com/henrygd/beszel/issues/new?template=feature_request.yml).
+        - For more general support, please [start a support thread](https://github.com/sudohash/beszel/discussions/new?category=support).
+        - To request a change or feature, use the [feature request form](https://github.com/sudohash/beszel/issues/new?template=feature_request.yml).
 
         ### Before submitting a bug report:
 
         - Check the [common issues guide](https://beszel.dev/guide/common-issues).
-        - Search existing [issues](https://github.com/henrygd/beszel/issues) and [discussions](https://github.com/henrygd/beszel/discussions) (including closed).
+        - Search existing [issues](https://github.com/sudohash/beszel/issues) and [discussions](https://github.com/sudohash/beszel/discussions) (including closed).
   - type: textarea
     id: description
     attributes:

@@ -1,6 +1,6 @@
 services:
   beszel:
-    image: 'henrygd/beszel'
+    image: 'sudohash/beszel'
     container_name: 'beszel'
     restart: unless-stopped
     ports:
@@ -11,7 +11,7 @@ services:
       - 'host.docker.internal:host-gateway'
 
   beszel-agent:
-    image: 'henrygd/beszel-agent'
+    image: 'sudohash/beszel-agent'
     container_name: 'beszel-agent'
     restart: unless-stopped
     network_mode: host

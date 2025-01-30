@@ -17,10 +17,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - image: henrygd/beszel
+          - image: sudohash/beszel
             context: ./beszel
             dockerfile: ./beszel/dockerfile_Hub
-          - image: henrygd/beszel-agent
+          - image: sudohash/beszel-agent
             context: ./beszel
             dockerfile: ./beszel/dockerfile_Agent
     permissions:

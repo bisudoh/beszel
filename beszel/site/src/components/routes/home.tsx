@@ -102,7 +102,7 @@ export default function Home() {
 			{hubVersion && (
 				<div className="flex gap-1.5 justify-end items-center pe-3 sm:pe-6 mt-3.5 text-xs opacity-80">
 					<a
-						href="https://github.com/henrygd/beszel"
+						href="https://github.com/sudohash/beszel"
 						target="_blank"
 						className="flex items-center gap-0.5 text-muted-foreground hover:text-foreground duration-75"
 					>
@@ -110,7 +110,7 @@ export default function Home() {
 					</a>
 					<Separator orientation="vertical" className="h-2.5 bg-muted-foreground opacity-70" />
 					<a
-						href="https://github.com/henrygd/beszel/releases"
+						href="https://github.com/sudohash/beszel/releases"
 						target="_blank"
 						className="text-muted-foreground hover:text-foreground duration-75"
 					>

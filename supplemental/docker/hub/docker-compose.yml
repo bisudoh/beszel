@@ -1,6 +1,6 @@
 services:
   beszel:
-    image: 'henrygd/beszel'
+    image: 'sudohash/beszel'
     container_name: 'beszel'
     restart: unless-stopped
     ports:

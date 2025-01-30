@@ -101,7 +101,7 @@ export default function ForgotPassword() {
 						./beszel superuser upsert user@example.com password
 					</code>
 					<code className="whitespace-nowrap w-full overflow-auto bg-muted rounded-sm py-0.5 px-2.5 me-auto text-sm">
-						docker run --rm -v ./beszel_data:/beszel_data henrygd/beszel superuser upsert user@example.com password
+						docker run --rm -v ./beszel_data:/beszel_data sudohash/beszel superuser upsert user@example.com password
 					</code>
 				</DialogContent>
 			</Dialog>
