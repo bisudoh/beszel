@@ -19,7 +19,7 @@ jobs:
             dockerfile: ./internal/dockerfile_hub
             registry: docker.io
             username_secret: DOCKERHUB_USERNAME
-            password_secret: DOCKERHUB_TOKEN
+            password_secret: DOCKERHUB_PASSWORD
             tags: |
               type=raw,value=edge
               type=semver,pattern={{version}}
@@ -32,7 +32,7 @@ jobs:
             dockerfile: ./internal/dockerfile_agent_alpine
             registry: docker.io
             username_secret: DOCKERHUB_USERNAME
-            password_secret: DOCKERHUB_TOKEN
+            password_secret: DOCKERHUB_PASSWORD
             tags: |
               type=raw,value=alpine
               type=semver,pattern={{version}}-alpine
@@ -45,7 +45,7 @@ jobs:
             platforms: linux/amd64
             registry: docker.io
             username_secret: DOCKERHUB_USERNAME
-            password_secret: DOCKERHUB_TOKEN
+            password_secret: DOCKERHUB_PASSWORD
             tags: |
               type=raw,value=edge
               type=semver,pattern={{version}}
@@ -59,7 +59,7 @@ jobs:
             platforms: linux/amd64
             registry: docker.io
             username_secret: DOCKERHUB_USERNAME
-            password_secret: DOCKERHUB_TOKEN
+            password_secret: DOCKERHUB_PASSWORD
             tags: |
               type=raw,value=edge
               type=semver,pattern={{version}}
@@ -139,7 +139,7 @@ jobs:
             dockerfile: ./internal/dockerfile_agent
             registry: docker.io
             username_secret: DOCKERHUB_USERNAME
-            password_secret: DOCKERHUB_TOKEN
+            password_secret: DOCKERHUB_PASSWORD
             tags: |
               type=raw,value=edge
               type=semver,pattern={{version}}
