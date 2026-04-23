@@ -15,7 +15,7 @@ jobs:
       matrix:
         include:
           # henrygd/beszel
-          - image: bisudoh/beszel
+          - image: sudohash/beszel
             dockerfile: ./internal/dockerfile_hub
             registry: docker.io
             username_secret: DOCKERHUB_USERNAME
@@ -28,7 +28,7 @@ jobs:
               type=raw,value={{sha}},enable=${{ github.ref_type != 'tag' }}
             
           # henrygd/beszel-agent:alpine
-          - image: bisudoh/beszel-agent
+          - image: sudohash/beszel-agent
             dockerfile: ./internal/dockerfile_agent_alpine
             registry: docker.io
             username_secret: DOCKERHUB_USERNAME
@@ -40,7 +40,7 @@ jobs:
               type=semver,pattern={{major}}-alpine
 
           # henrygd/beszel-agent-nvidia
-          - image: bisudoh/beszel-agent-nvidia
+          - image: sudohash/beszel-agent-nvidia
             dockerfile: ./internal/dockerfile_agent_nvidia
             platforms: linux/amd64
             registry: docker.io
@@ -54,7 +54,7 @@ jobs:
               type=raw,value={{sha}},enable=${{ github.ref_type != 'tag' }}
 
           # henrygd/beszel-agent-intel
-          - image: bisudoh/beszel-agent-intel
+          - image: sudohash/beszel-agent-intel
             dockerfile: ./internal/dockerfile_agent_intel
             platforms: linux/amd64
             registry: docker.io
@@ -135,7 +135,7 @@ jobs:
               type=semver,pattern={{major}}-alpine
 
           # henrygd/beszel-agent (keep at bottom so it gets built after :alpine and gets the latest tag)
-          - image: bisudoh/beszel-agent
+          - image: sudohash/beszel-agent
             dockerfile: ./internal/dockerfile_agent
             registry: docker.io
             username_secret: DOCKERHUB_USERNAME
